@@ -1,0 +1,7 @@
+aws_region            = "ap-northeast-2"
+project_name          = "edr"
+availability_zone     = "ap-northeast-2a"
+public_key_path       = "~/.ssh/id_rsa.pub"
+ssh_private_key_path  = "~/.ssh/id_rsa"
+spot_max_price        = "0.05"
+kubeconfig_local_path = "~/.kube/k3s-config"
