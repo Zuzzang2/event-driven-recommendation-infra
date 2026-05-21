@@ -32,13 +32,15 @@ resource "null_resource" "fetch_kubeconfig" {
           ubuntu@${var.public_ip}:/etc/rancher/k3s/k3s.yaml \
           ${var.kubeconfig_local_path}
       python3 -c "
-f = open('${var.kubeconfig_local_path}', 'r')
+import os
+p = os.path.expanduser('${var.kubeconfig_local_path}')
+f = open(p, 'r')
 content = f.read()
 f.close()
-f = open('${var.kubeconfig_local_path}', 'w')
+f = open(p, 'w')
 f.write(content.replace('127.0.0.1', '${var.public_ip}'))
 f.close()
-print('kubeconfig updated: ${var.kubeconfig_local_path}')
+print('kubeconfig updated: ' + p)
 "
     EOT
   }
