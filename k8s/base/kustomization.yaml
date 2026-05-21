@@ -1,0 +1,18 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: edr
+
+resources:
+  - namespace.yaml
+  - event-collector/configmap.yaml
+  - event-collector/deployment.yaml
+  - event-collector/service.yaml
+  - recommender/configmap.yaml
+  - recommender/deployment.yaml
+  - recommender/service.yaml
+  - recommender-job/cronjob.yaml
+# DATABASE_URL Secret(supabase-secret)은 git/ArgoCD 로 관리하지 않는다.
+# 클러스터에 kubectl 로 직접 생성한다:
+#   kubectl -n edr create secret generic supabase-secret \
+#     --from-literal=DATABASE_URL='postgresql://<user>:<password>@<host>:5432/postgres'

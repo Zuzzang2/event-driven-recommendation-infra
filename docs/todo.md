@@ -23,12 +23,12 @@
 ## Week 2 — K8s 매니페스트 + ArgoCD + CD
 
 ### K8s 매니페스트
-- [ ] `k8s/base/namespace.yaml`
-- [ ] `k8s/base/secrets/supabase-secret.yaml` (DATABASE_URL)
-- [ ] `k8s/base/event-collector/` — deployment, service, configmap
-- [ ] `k8s/base/recommender/` — deployment, service, configmap
-- [ ] `k8s/base/recommender-job/cronjob.yaml` — schedule: "*/5 * * * *"
-- [ ] `k8s/overlays/prod/kustomization.yaml`
+- [x] `k8s/base/namespace.yaml`
+- [x] DATABASE_URL Secret(supabase-secret) — git 미관리, `kubectl`로 클러스터에 직접 생성
+- [x] `k8s/base/event-collector/` — deployment, service, configmap
+- [x] `k8s/base/recommender/` — deployment, service, configmap
+- [x] `k8s/base/recommender-job/cronjob.yaml` — schedule: "*/5 * * * *"
+- [x] `k8s/overlays/prod/kustomization.yaml`
 
 ### ArgoCD
 - [ ] k3s에 ArgoCD 설치 (helm)

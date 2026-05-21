@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: recommender-job
+  labels:
+    app: recommender-job
+spec:
+  schedule: "*/5 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 60
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      template:
+        metadata:
+          labels:
+            app: recommender-job
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: recommender-job
+              image: ghcr.io/zuzzang2/recommender-job:latest
+              env:
+                - name: PYTHONUNBUFFERED
+                  value: "1"
+                - name: DATABASE_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: supabase-secret
+                      key: DATABASE_URL
+              resources:
+                requests:
+                  cpu: 50m
+                  memory: 64Mi
+                limits:
+                  cpu: 250m
+                  memory: 128Mi
