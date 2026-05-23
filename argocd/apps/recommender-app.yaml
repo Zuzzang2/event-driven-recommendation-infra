@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: recommender
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/Zuzzang2/event-driven-recommendation-infra
+    targetRevision: main
+    path: k8s/overlays/prod/recommender
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: edr
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
