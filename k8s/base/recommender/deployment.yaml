@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: recommender
-          image: ghcr.io/zuzzang2/recommender:latest
+          image: ghcr.io/zuzzang2/recommender:sha-50962a4
           ports:
             - name: http
               containerPort: 8000
