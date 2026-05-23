@@ -1,3 +1,7 @@
+# ArgoCD Application 은 CreateNamespace=true 로 edr 네임스페이스를 자동 생성한다.
+# 이 파일은 secret 선생성 등 수동 작업용(kubectl apply -f). DATABASE_URL Secret 은 git 미관리:
+#   kubectl -n edr create secret generic supabase-secret \
+#     --from-literal=DATABASE_URL='postgresql://<user>:<password>@<host>:5432/postgres'
 apiVersion: v1
 kind: Namespace
 metadata:

@@ -1,0 +1,42 @@
+# helm values — argo/argo-cd 차트 RAM 절약 (8GB 노드 예산 ~800Mi 목표)
+# helm install argocd argo/argo-cd -n argocd --create-namespace -f argocd/install/values.yaml
+
+# 미사용 컴포넌트 비활성 (RAM 절약)
+dex:
+  enabled: false
+notifications:
+  enabled: false
+applicationSet:
+  enabled: false
+
+controller:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+
+repoServer:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      memory: 256Mi
+
+server:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
+
+redis:
+  resources:
+    requests:
+      cpu: 25m
+      memory: 64Mi
+    limits:
+      memory: 128Mi
