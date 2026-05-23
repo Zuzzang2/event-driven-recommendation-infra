@@ -1,6 +1,6 @@
 # event-driven-recommendation-infra TODO
 
-## Week 1 — Terraform 인프라
+## Terraform 인프라
 
 ### Supabase
 - [x] Supabase 프로젝트 생성
@@ -20,7 +20,7 @@
 
 ---
 
-## Week 2 — K8s 매니페스트 + ArgoCD + CD
+## K8s 매니페스트 + ArgoCD + CD
 
 ### K8s 매니페스트
 - [x] `k8s/base/namespace.yaml`
@@ -46,7 +46,7 @@
 
 ---
 
-## Week 3 — 모니터링
+## 모니터링
 
 ### Prometheus + Grafana
 - [ ] `monitoring/prometheus/values.yaml` — retention: 3d, memory limit: 400Mi
@@ -66,9 +66,26 @@
 
 ---
 
-## Week 4 — 마무리
+## 마무리
 
 - [ ] README + Mermaid 아키텍처 다이어그램
 - [ ] `terraform.tfvars.example` 최종 점검
 - [ ] `terraform destroy` → `terraform apply` 재현성 확인
 - [ ] 포트폴리오 스크린샷 (ArgoCD, Grafana 대시보드)
+
+---
+
+## 백로그 — Spot 자동 재기동 (나중에 작업)
+
+배경: Spot 인스턴스가 자주 회수돼 클러스터가 down → 현재는 매번
+`terraform apply -replace="module.k3s.null_resource.k3s_install" -replace="...fetch_kubeconfig"` 수동 복구.
+참고: kubeconfig server 주소는 고정 EIP(43.200.40.173)라 IP는 안 바뀜 → EIP 자동 연결만 보장하면 됨.
+
+- [ ] (권장) ASG + Launch Template 전환 — Spot 회수 시 ASG가 자동 인스턴스 교체
+  - [ ] `aws-ec2` 모듈을 단일 `aws_instance` → Launch Template + Auto Scaling Group(desired=1, Spot)로 리팩터
+  - [ ] k3s 설치를 remote-exec → Launch Template `user_data` 로 이전 (부팅 시 self-bootstrap)
+  - [ ] EIP 자동 연결 — IAM instance profile + user_data 에서 `aws ec2 associate-address`
+  - [ ] (선택) capacity-optimized 할당 전략 / 다중 인스턴스 타입 풀로 회수 빈도 완화
+- [ ] (임시/간단) 워치독 스크립트 — 인스턴스 존재 polling 후 없으면 `terraform apply -replace` 자동 실행
+  - 로컬 cron (맥 켜져 있을 때만 동작) 또는 EventBridge(Spot interruption warning) → Lambda/SSM Automation
+- [ ] 재기동 후 워크로드 자동 복구 확인 (ArgoCD auto-sync 가 재배포 담당)
