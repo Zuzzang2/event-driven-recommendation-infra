@@ -21,7 +21,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: recommender-job
-              image: ghcr.io/zuzzang2/recommender-job:latest
+              image: ghcr.io/zuzzang2/recommender-job:sha-50962a4
               env:
                 - name: PYTHONUNBUFFERED
                   value: "1"

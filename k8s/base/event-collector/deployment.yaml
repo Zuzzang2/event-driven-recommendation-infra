@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: event-collector
-          image: ghcr.io/zuzzang2/event-collector:latest
+          image: ghcr.io/zuzzang2/event-collector:sha-50962a4
           ports:
             - name: http
               containerPort: 8000
