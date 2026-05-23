@@ -31,12 +31,12 @@
 - [x] `k8s/overlays/prod/kustomization.yaml`
 
 ### ArgoCD
-- [ ] k3s에 ArgoCD 설치 (helm)
-- [ ] `argocd/install/argocd-resource-limits.yaml` — 컴포넌트별 memory limit 적용
-- [ ] `argocd/apps/event-collector-app.yaml`
-- [ ] `argocd/apps/recommender-app.yaml`
-- [ ] `argocd/apps/recommender-job-app.yaml`
-- [ ] ArgoCD 대시보드 Synced + Healthy 확인
+- [x] k3s에 ArgoCD 설치 (helm)
+- [x] `argocd/install/values.yaml` — 컴포넌트별 memory limit(~768Mi) + dex/notifications/applicationSet 비활성
+- [x] `argocd/apps/event-collector-app.yaml`
+- [x] `argocd/apps/recommender-app.yaml`
+- [x] `argocd/apps/recommender-job-app.yaml`
+- [x] ArgoCD 대시보드 Synced + Healthy 확인 (3개 앱 모두 Healthy)
 
 ### GitHub Actions CD
 - [ ] `.github/workflows/cd-update-manifest.yaml`
