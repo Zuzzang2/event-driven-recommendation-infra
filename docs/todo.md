@@ -38,11 +38,11 @@
 - [x] `argocd/apps/recommender-job-app.yaml`
 - [x] ArgoCD 대시보드 Synced + Healthy 확인 (3개 앱 모두 Healthy)
 
-### GitHub Actions CD
-- [ ] `.github/workflows/cd-update-manifest.yaml`
-  - [ ] repository_dispatch 수신
-  - [ ] deployment.yaml / cronjob.yaml image tag 교체
-  - [ ] git commit & push
+### CD (수동 sync 채택 — GitHub Actions 자동화 미진행)
+- [x] 이미지 태그를 매니페스트에 고정 (`:sha-XXXX`)
+- [x] ArgoCD Application 수동 sync 전환 (auto-sync 제거)
+- 새 버전 배포: CI가 새 sha 빌드 → 매니페스트 태그 수정·commit → ArgoCD UI에서 Sync
+- ~~`.github/workflows/cd-update-manifest.yaml` (repository_dispatch 자동화)~~ — 의도적 미진행
 
 ---
 
