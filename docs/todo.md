@@ -24,7 +24,7 @@
 
 ### K8s 매니페스트
 - [x] `k8s/base/namespace.yaml`
-- [x] DATABASE_URL Secret(supabase-secret) — git 미관리, `kubectl`로 클러스터에 직접 생성
+- [x] DATABASE_URL Secret(supabase-secret) — **ESO + AWS SSM** 으로 관리 (git 미관리, 아래 시크릿 섹션)
 - [x] `k8s/base/event-collector/` — deployment, service, configmap
 - [x] `k8s/base/recommender/` — deployment, service, configmap
 - [x] `k8s/base/recommender-job/cronjob.yaml` — schedule: "*/5 * * * *"
@@ -43,6 +43,18 @@
 - [x] ArgoCD Application 수동 sync 전환 (auto-sync 제거)
 - 새 버전 배포: CI가 새 sha 빌드 → 매니페스트 태그 수정·commit → ArgoCD UI에서 Sync
 - ~~`.github/workflows/cd-update-manifest.yaml` (repository_dispatch 자동화)~~ — 의도적 미진행
+
+---
+
+## 시크릿 관리 (ESO + AWS SSM)
+- [x] EC2 instance profile + `ssm:GetParameter` IAM + IMDSv2 hop limit 2 (terraform aws-ec2)
+- [x] SSM SecureString 등록 — `/edr/supabase/database_url` (Standard tier, 무료)
+- [x] External Secrets Operator 설치 (helm)
+- [x] `external-secrets/` — SecretStore(aws-ssm) + ExternalSecret(supabase-secret ← SSM)
+- [x] ExternalSecret Synced 확인 — 회수돼도 SSM에서 자동 복구
+
+## 운영 — 클러스터 복구
+- [x] `scripts/bootstrap.sh` — Spot 회수 후 1커맨드 전체 복구 (k3s→ArgoCD→ESO→앱→Sync)
 
 ---
 
@@ -77,8 +89,8 @@
 
 ## 백로그 — Spot 자동 재기동 (나중에 작업)
 
-배경: Spot 인스턴스가 자주 회수돼 클러스터가 down → 현재는 매번
-`terraform apply -replace="module.k3s.null_resource.k3s_install" -replace="...fetch_kubeconfig"` 수동 복구.
+배경: Spot 인스턴스가 자주 회수돼 클러스터가 down. 현재는 `scripts/bootstrap.sh` 1커맨드로
+복구(반자동, 회수 감지는 수동). 아래는 **회수 감지까지 전자동**으로 만드는 백로그.
 참고: kubeconfig server 주소는 고정 EIP(43.200.40.173)라 IP는 안 바뀜 → EIP 자동 연결만 보장하면 됨.
 
 - [ ] (권장) ASG + Launch Template 전환 — Spot 회수 시 ASG가 자동 인스턴스 교체
