@@ -8,3 +8,4 @@ terraform.tfvars
 *.key
 kubeconfig
 .DS_Store
+scripts/.db-url
