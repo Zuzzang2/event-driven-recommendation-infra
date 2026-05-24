@@ -25,6 +25,15 @@ resource "aws_instance" "k3s" {
 
   vpc_security_group_ids = [var.sg_id]
 
+  # ESO 등 파드가 IMDS로 인스턴스 역할 자격증명을 받아 SSM 접근
+  iam_instance_profile = aws_iam_instance_profile.k3s.name
+
+  metadata_options {
+    http_endpoint               = "enabled"
+    http_tokens                 = "required" # IMDSv2 강제
+    http_put_response_hop_limit = 2          # 파드(추가 1홉)에서 IMDS 접근 허용
+  }
+
   instance_market_options {
     market_type = "spot"
     spot_options {
