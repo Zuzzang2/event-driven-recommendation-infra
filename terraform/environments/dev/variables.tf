@@ -30,3 +30,9 @@ variable "kubeconfig_local_path" {
   type    = string
   default = "~/.kube/k3s-config"
 }
+
+variable "allowed_cidrs" {
+  type        = list(string)
+  description = "SG 인바운드 허용 CIDR (SSH/HTTP/HTTPS/k3s API). tfvars로 내 IP/32 지정 권장"
+  default     = ["0.0.0.0/0"]
+}
