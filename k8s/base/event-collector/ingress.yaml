@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: event-collector
+  labels:
+    app: event-collector
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: events.43.200.40.173.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: event-collector
+                port:
+                  number: 8000
